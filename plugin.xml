@@ -39,6 +39,7 @@
           <key>CFBundleURLSchemes</key>
           <array>
             <string>$URL_SCHEME</string>
+            <string>fb681351915235498</string>
           </array>
         </dict>
       </array>
