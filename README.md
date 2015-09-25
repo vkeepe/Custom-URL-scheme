@@ -40,6 +40,12 @@ This plugin allows you to start your app by calling it with a URL like `mycoolap
 LaunchMyApp is compatible with [Cordova Plugman](https://github.com/apache/cordova-plugman).
 Replace `mycoolapp` by a nice scheme you want to have your app listen to:
 
+Latest release on npm:
+```
+$ cordova plugin add cordova-plugin-customurlscheme --variable URL_SCHEME=mycoolapp
+```
+
+Bleeding edge master version from Github:
 ```
 $ cordova plugin add https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git --variable URL_SCHEME=mycoolapp
 ```
@@ -52,6 +58,7 @@ Please manually remove the blank line and whitespace (if any) from `NSMainNibFil
 
 
 ### Manually
+Don't shoot yourself in the foot - use the CLI! That being said, here goes:
 
 #### iOS
 1\. `Copy www/ios/LaunchMyApp.js` to `www/js/plugins/LaunchMyApp.js` and reference it in your `index.html`:
@@ -101,7 +108,7 @@ Please manually remove the blank line and whitespace (if any) from `NSMainNibFil
 
 Using LaunchMyApp with PhoneGap Build requires you to add the following xml to your `config.xml` to use the latest version of this plugin (replace `mycoolapp` by a nice scheme you want to have your app listen to):
 ```xml
-<gap:plugin name="nl.x-services.plugins.launchmyapp">
+<gap:plugin name="cordova-plugin-customurlscheme" source="npm">
   <param name="URL_SCHEME" value="mycoolapp" />
 </gap:plugin>
 ```
@@ -109,6 +116,22 @@ Using LaunchMyApp with PhoneGap Build requires you to add the following xml to y
 The LaunchMyApp.js file is brought in automatically.
 
 NOTE: When Hydration is enabled at PGB, this plugin may not work.
+
+### Restoring cordova plugin settings on plugin add or update
+In order to be able to restore the plugin settings on `cordova plugin add`, one need to add the following feature into config.xml. Note that if you added the plugin with the `--save` param you will find this in your `config.xml` already, except for the `variable` tag which is likely a `param` tag. [Change that.](https://github.com/EddyVerbruggen/Custom-URL-scheme/issues/76)
+```xml
+  <feature name="Custom URL scheme">
+    <param name="id" value="cordova-plugin-customurlscheme" />
+    <param name="url" value="https://github.com/EddyVerbruggen/LaunchMyApp-PhoneGap-Plugin.git" />
+    <variable name="URL_SCHEME" value="mycoolapp" /><!-- change as appropriate -->
+  </feature>
+```
+
+Please notice that URL_SCHEME is saved as `variable`, not as `prop`. However if you do `cordova plugin add` with a --save option, cordova will write the URL_SCHEME as a `prop`, you need to change the tag name from `param` to `variable` in this case.
+
+These plugin restore instructions are tested on:
+cordova-cli 4.3.+ and cordova-android 3.7.1+
+
 
 ## 3. Usage
 
